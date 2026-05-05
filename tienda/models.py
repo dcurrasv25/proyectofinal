@@ -1,9 +1,19 @@
 from django.db import models
 
+class Categoria(models.Model):
+    id_categoria = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.nombre
+
 class Usuario(models.Model):
     # Django crea el campo 'id' de forma automática y lo asigna como PK por defecto.
     nombre_de_usuario = models.CharField(max_length=150, unique=True)
     gmail = models.EmailField(unique=True)
+    
+    # Aquí el usuario guarda sus perfumes favoritos a través de la tabla intermedia explícita
+    perfumes_favoritos = models.ManyToManyField('Perfume', through='PerfumeFavorito', related_name='favorito_de', blank=True)
 
     def __str__(self):
         return self.nombre_de_usuario
@@ -24,11 +34,24 @@ class Perfume(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     
     # Relaciones
+    categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True, related_name='perfumes')
     notas = models.ManyToManyField(Nota, related_name='perfumes')
-    favorito_de = models.ManyToManyField(Usuario, related_name='perfumes_favoritos', blank=True)
 
     def __str__(self):
         return f"{self.nombre} ({self.marca})"
+
+# TABLA INTERMEDIA EXPLÍCITA PARA FAVORITOS
+class PerfumeFavorito(models.Model):
+    id_favorito = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    perfume = models.ForeignKey(Perfume, on_delete=models.CASCADE)
+    fecha_agregado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'perfume')
+
+    def __str__(self):
+        return f"{self.usuario.nombre_de_usuario} - {self.perfume.nombre}"
 
 class Compra(models.Model):
     id_compra = models.AutoField(primary_key=True)
