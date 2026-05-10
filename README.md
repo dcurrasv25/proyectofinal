@@ -30,7 +30,7 @@ Sigue estos pasos para levantar el entorno de desarrollo en tu maquina local:
 
 ### 1. Clonar el repositorio
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/dcurrasv25/proyectofinal
 cd proyectofinal
 ```
 
