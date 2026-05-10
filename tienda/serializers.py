@@ -7,9 +7,19 @@ class CategoriaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = ('id', 'username', 'email', 'password')
+
+    def create(self, validated_data):
+        user = Usuario.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data.get('email', ''),
+            password=validated_data['password']
+        )
+        return user
 
 class NotaSerializer(serializers.ModelSerializer):
     class Meta:

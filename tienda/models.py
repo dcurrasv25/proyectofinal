@@ -1,4 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class Usuario(AbstractUser):
+    # AbstractUser ya incluye campos como 'username' (para el nombre de usuario), 
+    # 'email' (para el correo), y 'password' de forma nativa.
+    pass
 
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)
@@ -6,17 +12,6 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nombre
-
-class Usuario(models.Model):
-    # Django crea el campo 'id' de forma automática y lo asigna como PK por defecto.
-    nombre_de_usuario = models.CharField(max_length=150, unique=True)
-    gmail = models.EmailField(unique=True)
-    
-    # Aquí el usuario guarda sus perfumes favoritos a través de la tabla intermedia explícita
-    perfumes_favoritos = models.ManyToManyField('Perfume', through='PerfumeFavorito', related_name='favorito_de', blank=True)
-
-    def __str__(self):
-        return self.nombre_de_usuario
 
 class Nota(models.Model):
     id_nota = models.AutoField(primary_key=True)
@@ -43,7 +38,7 @@ class Perfume(models.Model):
 # TABLA INTERMEDIA EXPLÍCITA PARA FAVORITOS
 class PerfumeFavorito(models.Model):
     id_favorito = models.AutoField(primary_key=True)
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='perfumes_favoritos')
     perfume = models.ForeignKey(Perfume, on_delete=models.CASCADE)
     fecha_agregado = models.DateTimeField(auto_now_add=True)
 
@@ -51,7 +46,7 @@ class PerfumeFavorito(models.Model):
         unique_together = ('usuario', 'perfume')
 
     def __str__(self):
-        return f"{self.usuario.nombre_de_usuario} - {self.perfume.nombre}"
+        return f"{self.usuario.username} - {self.perfume.nombre}"
 
 class Compra(models.Model):
     id_compra = models.AutoField(primary_key=True)
@@ -59,7 +54,7 @@ class Compra(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='compras')
 
     def __str__(self):
-        return f"Compra {self.id_compra} - {self.usuario.nombre_de_usuario}"
+        return f"Compra {self.id_compra} - {self.usuario.username}"
 
 class LineaPedido(models.Model):
     id_linea = models.AutoField(primary_key=True)
