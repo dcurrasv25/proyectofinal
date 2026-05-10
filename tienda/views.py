@@ -1,12 +1,15 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from .models import Usuario, Perfume, Categoria, PerfumeFavorito, Nota, Compra, LineaPedido
 from .serializers import (
     UsuarioSerializer, PerfumeSerializer, CategoriaSerializer, 
-    PerfumeFavoritoSerializer, NotaSerializer, CompraSerializer, LineaPedidoSerializer
+    PerfumeFavoritoSerializer, NotaSerializer, CompraSerializer, LineaPedidoSerializer,
+    InicioSesionSerializer
 )
 
 class CategoriaViewSet(viewsets.ModelViewSet):
@@ -29,14 +32,16 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
 
     @action(detail=True, methods=['get'])
-    def favorites(self, request, pk=None):
+    def favoritos(self, request, pk=None):
         usuario = self.get_object()
         favoritos = usuario.perfumes_favoritos.all()
-        serializer = PerfumeSerializer(favoritos, many=True)
+        # Obtenemos los objetos Perfume a partir de la tabla intermedia
+        perfumes = [fav.perfume for fav in favoritos]
+        serializer = PerfumeSerializer(perfumes, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['post', 'delete'], url_path=r'favorites/(?P<perfume_id>\d+)')
-    def modify_favorite(self, request, pk=None, perfume_id=None):
+    @action(detail=True, methods=['post', 'delete'], url_path=r'favoritos/(?P<perfume_id>\d+)')
+    def modificar_favorito(self, request, pk=None, perfume_id=None):
         usuario = self.get_object()
         perfume = get_object_or_404(Perfume, pk=perfume_id)
 
@@ -82,3 +87,17 @@ class CompraViewSet(viewsets.ModelViewSet):
 class LineaPedidoViewSet(viewsets.ModelViewSet):
     queryset = LineaPedido.objects.all()
     serializer_class = LineaPedidoSerializer
+
+class IniciarSesionView(ObtainAuthToken):
+    serializer_class = InicioSesionSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'id': user.id,
+            'nombre_de_usuario': user.username
+        })

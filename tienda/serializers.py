@@ -7,11 +7,13 @@ class CategoriaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UsuarioSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
+    contrasena = serializers.CharField(write_only=True, source='password')
+    correo = serializers.EmailField(source='email', required=False)
+    nombre_de_usuario = serializers.CharField(source='username')
 
     class Meta:
         model = Usuario
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('id', 'nombre_de_usuario', 'correo', 'contrasena')
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(
@@ -20,6 +22,26 @@ class UsuarioSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+
+class InicioSesionSerializer(serializers.Serializer):
+    nombre_de_usuario = serializers.CharField()
+    contrasena = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        username = attrs.get('nombre_de_usuario')
+        password = attrs.get('contrasena')
+
+        from django.contrib.auth import authenticate
+        if username and password:
+            user = authenticate(request=self.context.get('request'),
+                                username=username, password=password)
+            if not user:
+                raise serializers.ValidationError('Las credenciales son incorrectas.')
+        else:
+            raise serializers.ValidationError('Debe incluir "nombre_de_usuario" y "contrasena".')
+
+        attrs['user'] = user
+        return attrs
 
 class NotaSerializer(serializers.ModelSerializer):
     class Meta:
