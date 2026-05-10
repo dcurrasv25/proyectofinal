@@ -72,7 +72,7 @@ class PerfumeViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def populares(self, request):
-        perfumes = Perfume.objects.annotate(num_favoritos=Count('favorito_de')).order_by('-num_favoritos')[:5]
+        perfumes = Perfume.objects.annotate(num_favoritos=Count('perfumefavorito')).order_by('-num_favoritos')[:5]
         serializer = PerfumeSerializer(perfumes, many=True)
         return Response(serializer.data)
 
