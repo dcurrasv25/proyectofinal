@@ -1,57 +1,52 @@
 package com.example.proyectofinal;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.proyectofinal.data.api.RetrofitClient;
-import com.example.proyectofinal.data.model.Perfume;
-import com.example.proyectofinal.ui.adapter.PerfumeAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.proyectofinal.ui.home.HomeFragment;
+import com.example.proyectofinal.ui.categories.CategoriesFragment;
+import com.example.proyectofinal.ui.profile.ProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView rvPerfumes;
-    private PerfumeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rvPerfumes = findViewById(R.id.rvPerfumes);
-        rvPerfumes.setLayoutManager(new LinearLayoutManager(this));
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         
-        adapter = new PerfumeAdapter(new ArrayList<>());
-        rvPerfumes.setAdapter(adapter);
+        // Load default fragment
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+        }
 
-        cargarPerfumes();
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            Fragment fragment;
+            int itemId = item.getItemId();
+            
+            if (itemId == R.id.nav_home) {
+                fragment = new HomeFragment();
+            } else if (itemId == R.id.nav_categories) {
+                fragment = new CategoriesFragment();
+            } else if (itemId == R.id.nav_profile) {
+                fragment = new ProfileFragment();
+            } else {
+                return false;
+            }
+            
+            loadFragment(fragment);
+            return true;
+        });
     }
 
-    private void cargarPerfumes() {
-        RetrofitClient.getApiService().getPerfumes().enqueue(new Callback<List<Perfume>>() {
-            @Override
-            public void onResponse(Call<List<Perfume>> call, Response<List<Perfume>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    adapter.setPerfumes(response.body());
-                } else {
-                    Toast.makeText(MainActivity.this, "Error al cargar perfumes", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Perfume>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.nav_host_fragment, fragment);
+        transaction.commit();
     }
 }
