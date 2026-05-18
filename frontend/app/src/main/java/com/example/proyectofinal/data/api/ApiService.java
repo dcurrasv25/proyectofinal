@@ -40,4 +40,7 @@ public interface ApiService {
 
     @DELETE("usuarios/{id}/favoritos/{perfume_id}/")
     Call<Void> removeFavorito(@Path("id") int id, @Path("perfume_id") int perfumeId);
+
+    @GET("categorias/{id}/perfumes/")
+    Call<List<Perfume>> getPerfumesPorCategoria(@Path("id") int id);
 }

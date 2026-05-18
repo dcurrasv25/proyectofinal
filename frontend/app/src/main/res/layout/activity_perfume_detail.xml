@@ -30,13 +30,28 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <TextView
-                    android:id="@+id/tvDetailNombre"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvDetailNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/btnFavorito"
+                        android:text="Nombre"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/btnFavorito"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@android:drawable/btn_star" />
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/tvDetailMarca"

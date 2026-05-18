@@ -61,9 +61,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Guardar token y ID de usuario si fuera necesario (SharedPreferences)
+                    android.content.SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                    android.content.SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putInt("user_id", response.body().getId());
+                    editor.putString("token", response.body().getToken());
+                    editor.apply();
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.putExtra("user_id", response.body().getId());
                     startActivity(intent);
                     finish();
                 } else {

@@ -31,6 +31,9 @@
         <activity
             android:name=".ui.PerfumeDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.categories.CategoryPerfumesActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
