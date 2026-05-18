@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,8 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView rvPerfumes;
     private PerfumeAdapter adapter;
+    private SearchView searchView;
+    private List<Perfume> allPerfumes = new ArrayList<>();
 
     @Nullable
     @Override
@@ -35,14 +38,43 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         rvPerfumes = view.findViewById(R.id.rvPerfumes);
+        searchView = view.findViewById(R.id.searchView);
         rvPerfumes.setLayoutManager(new LinearLayoutManager(getContext()));
         
         adapter = new PerfumeAdapter(new ArrayList<>());
         rvPerfumes.setAdapter(adapter);
 
         cargarPerfumes();
+        configurarBuscador();
 
         return view;
+    }
+
+    private void configurarBuscador() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filtrar(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtrar(newText);
+                return false;
+            }
+        });
+    }
+
+    private void filtrar(String texto) {
+        List<Perfume> filtrados = new ArrayList<>();
+        for (Perfume p : allPerfumes) {
+            if (p.getNombre().toLowerCase().contains(texto.toLowerCase()) || 
+                (p.getMarca() != null && p.getMarca().toLowerCase().contains(texto.toLowerCase()))) {
+                filtrados.add(p);
+            }
+        }
+        adapter.setPerfumes(filtrados);
     }
 
     private void cargarPerfumes() {
@@ -50,7 +82,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Perfume>> call, Response<List<Perfume>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    adapter.setPerfumes(response.body());
+                    allPerfumes = response.body();
+                    adapter.setPerfumes(allPerfumes);
                 } else {
                     if (getContext() != null) {
                         Toast.makeText(getContext(), "Error al cargar perfumes", Toast.LENGTH_SHORT).show();
