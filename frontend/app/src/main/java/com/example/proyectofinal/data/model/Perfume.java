@@ -13,6 +13,7 @@ public class Perfume {
     private double precio;
     private Integer categoria;
     private List<Integer> notas;
+    private String imagen;
 
     // Getters and Setters
     public int getId() { return id; }
@@ -31,4 +32,6 @@ public class Perfume {
     public void setCategoria(Integer categoria) { this.categoria = categoria; }
     public List<Integer> getNotas() { return notas; }
     public void setNotas(List<Integer> notas) { this.notas = notas; }
+    public String getImagen() { return imagen; }
+    public void setImagen(String imagen) { this.imagen = imagen; }
 }

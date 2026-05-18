@@ -43,7 +43,8 @@ def fetch_and_populate():
                 "gender": "Hombre",
                 "price": "95.50",
                 "category": "Cítrico",
-                "notes": ["Bergamota", "Pimienta", "Ambroxan"]
+                "notes": ["Bergamota", "Pimienta", "Ambroxan"],
+                "image": "https://m.media-amazon.com/images/I/61k99O1X5BL._SL1000_.jpg"
             },
             {
                 "name": "La Vie Est Belle",
@@ -52,7 +53,8 @@ def fetch_and_populate():
                 "gender": "Mujer",
                 "price": "80.00",
                 "category": "Floral",
-                "notes": ["Iris", "Jazmín", "Flor de azahar"]
+                "notes": ["Iris", "Jazmín", "Flor de azahar"],
+                "image": "https://m.media-amazon.com/images/I/61B1v0D2YDL._SL1500_.jpg"
             },
             {
                 "name": "Acqua di Giò",
@@ -61,7 +63,8 @@ def fetch_and_populate():
                 "gender": "Hombre",
                 "price": "75.00",
                 "category": "Acuático",
-                "notes": ["Notas marinas", "Lima", "Madera de cedro"]
+                "notes": ["Notas marinas", "Lima", "Madera de cedro"],
+                "image": "https://m.media-amazon.com/images/I/51rP0XwX7oL._SL1000_.jpg"
             },
             {
                 "name": "Baccarat Rouge 540",
@@ -70,7 +73,8 @@ def fetch_and_populate():
                 "gender": "Unisex",
                 "price": "250.00",
                 "category": "Amaderado",
-                "notes": ["Azafrán", "Jazmín", "Ámbar gris"]
+                "notes": ["Azafrán", "Jazmín", "Ámbar gris"],
+                "image": "https://m.media-amazon.com/images/I/61Xz9X7l9oL._SL1500_.jpg"
             },
             {
                 "name": "Black Opium",
@@ -79,7 +83,8 @@ def fetch_and_populate():
                 "gender": "Mujer",
                 "price": "90.00",
                 "category": "Oriental",
-                "notes": ["Café", "Vainilla", "Flor de azahar"]
+                "notes": ["Café", "Vainilla", "Flor de azahar"],
+                "image": "https://m.media-amazon.com/images/I/61r5qZgA5vL._SL1500_.jpg"
             },
             {
                 "name": "1 Million",
@@ -88,7 +93,8 @@ def fetch_and_populate():
                 "gender": "Hombre",
                 "price": "85.00",
                 "category": "Especiado",
-                "notes": ["Pomelo", "Canela", "Cuero"]
+                "notes": ["Pomelo", "Canela", "Cuero"],
+                "image": "https://m.media-amazon.com/images/I/51d6vA2wJ8L._SL1000_.jpg"
             },
             {
                 "name": "Chanel No 5",
@@ -97,7 +103,8 @@ def fetch_and_populate():
                 "gender": "Mujer",
                 "price": "140.00",
                 "category": "Aldehídico",
-                "notes": ["Aldehídos", "Rosa", "Sándalo"]
+                "notes": ["Aldehídos", "Rosa", "Sándalo"],
+                "image": "https://m.media-amazon.com/images/I/71R2I2J1wZL._SL1500_.jpg"
             },
             {
                 "name": "Terre d'Hermès",
@@ -106,7 +113,8 @@ def fetch_and_populate():
                 "gender": "Hombre",
                 "price": "110.00",
                 "category": "Amaderado",
-                "notes": ["Naranja", "Pimienta", "Vetiver"]
+                "notes": ["Naranja", "Pimienta", "Vetiver"],
+                "image": "https://m.media-amazon.com/images/I/61uYgVjOa3L._SL1500_.jpg"
             }
         ]
         
@@ -131,7 +139,8 @@ def fetch_and_populate():
                     'tipo': item.get('type', 'Desconocido'),
                     'genero': item.get('gender', 'Unisex'),
                     'precio': item.get('price', 0.00),
-                    'categoria': categoria_obj
+                    'categoria': categoria_obj,
+                    'imagen': item.get('image', '')
                 }
             )
             

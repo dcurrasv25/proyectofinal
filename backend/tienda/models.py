@@ -27,6 +27,7 @@ class Perfume(models.Model):
     tipo = models.CharField(max_length=100)
     genero = models.CharField(max_length=50)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
+    imagen = models.URLField(max_length=500, null=True, blank=True)
     
     # Relaciones
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, blank=True, related_name='perfumes')
