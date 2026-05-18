@@ -58,12 +58,16 @@ class PerfumeFavoritoSerializer(serializers.ModelSerializer):
         model = PerfumeFavorito
         fields = '__all__'
 
-class CompraSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Compra
-        fields = '__all__'
-
 class LineaPedidoSerializer(serializers.ModelSerializer):
+    perfume_detalle = PerfumeSerializer(source='perfume', read_only=True)
+    
     class Meta:
         model = LineaPedido
+        fields = '__all__'
+
+class CompraSerializer(serializers.ModelSerializer):
+    lineas = LineaPedidoSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Compra
         fields = '__all__'

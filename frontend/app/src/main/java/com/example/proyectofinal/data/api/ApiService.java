@@ -43,4 +43,13 @@ public interface ApiService {
 
     @GET("categorias/{id}/perfumes/")
     Call<List<Perfume>> getPerfumesPorCategoria(@Path("id") int id);
+
+    @POST("compras/")
+    Call<com.example.proyectofinal.data.model.CompraResponse> crearCompra(@Body com.example.proyectofinal.data.model.CompraRequest request);
+
+    @POST("lineas_pedido/")
+    Call<Void> crearLineaPedido(@Body com.example.proyectofinal.data.model.LineaPedidoRequest request);
+
+    @GET("usuarios/{id}/compras/")
+    Call<List<com.example.proyectofinal.data.model.CompraResponse>> getCompras(@Path("id") int id);
 }
