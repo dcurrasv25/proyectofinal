@@ -1,6 +1,7 @@
 package com.example.proyectofinal.ui;
 
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -9,12 +10,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.data.api.RetrofitClient;
 import com.example.proyectofinal.data.local.CartManager;
 import com.example.proyectofinal.data.model.Perfume;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +31,7 @@ public class PerfumeDetailActivity extends AppCompatActivity {
     private Button btnComprar;
     private ImageButton btnFavorito;
     private Perfume currentPerfume;
+    private boolean isFavorito = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,10 @@ public class PerfumeDetailActivity extends AppCompatActivity {
                     .into(ivDetailImagen);
         }
 
+        // Inicializar la estrella en gris y comprobar si es favorito
+        actualizarColorEstrella();
+        comprobarSiEsFavorito(id);
+
         btnComprar.setOnClickListener(v -> {
             CartManager.getInstance().addToCart(currentPerfume);
             Toast.makeText(this, nombre + " añadido al carrito", Toast.LENGTH_SHORT).show();
@@ -83,24 +92,92 @@ public class PerfumeDetailActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             int userId = prefs.getInt("user_id", -1);
             if (userId != -1) {
-                RetrofitClient.getApiService().addFavorito(userId, id).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(PerfumeDetailActivity.this, "Guardado en favoritos", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(PerfumeDetailActivity.this, "Error al guardar favorito", Toast.LENGTH_SHORT).show();
+                if (isFavorito) {
+                    // Quitar de favoritos
+                    RetrofitClient.getApiService().removeFavorito(userId, id).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                isFavorito = false;
+                                actualizarColorEstrella();
+                                Toast.makeText(PerfumeDetailActivity.this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(PerfumeDetailActivity.this, "Error al eliminar favorito", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(PerfumeDetailActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(PerfumeDetailActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    // Añadir a favoritos
+                    RetrofitClient.getApiService().addFavorito(userId, id).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                isFavorito = true;
+                                actualizarColorEstrella();
+                                Toast.makeText(PerfumeDetailActivity.this, "Guardado en favoritos", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(PerfumeDetailActivity.this, "Error al guardar favorito", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(PerfumeDetailActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             } else {
                 Toast.makeText(this, "Inicia sesión para guardar favoritos", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Comprueba si el perfume actual está en la lista de favoritos del usuario.
+     */
+    private void comprobarSiEsFavorito(int perfumeId) {
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        int userId = prefs.getInt("user_id", -1);
+        if (userId == -1) return;
+
+        RetrofitClient.getApiService().getFavoritos(userId).enqueue(new Callback<List<Perfume>>() {
+            @Override
+            public void onResponse(Call<List<Perfume>> call, Response<List<Perfume>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (Perfume p : response.body()) {
+                        if (p.getId() == perfumeId) {
+                            isFavorito = true;
+                            actualizarColorEstrella();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Perfume>> call, Throwable t) {
+                // Si falla la comprobación, la estrella se queda gris
+            }
+        });
+    }
+
+    /**
+     * Cambia el color de la estrella: amarillo si es favorito, gris si no lo es.
+     */
+    private void actualizarColorEstrella() {
+        if (isFavorito) {
+            btnFavorito.setColorFilter(
+                    ContextCompat.getColor(this, android.R.color.holo_orange_light),
+                    PorterDuff.Mode.SRC_IN);
+        } else {
+            btnFavorito.setColorFilter(
+                    ContextCompat.getColor(this, android.R.color.darker_gray),
+                    PorterDuff.Mode.SRC_IN);
+        }
     }
 }
