@@ -2,6 +2,7 @@ package com.example.proyectofinal.data.api;
 
 import com.example.proyectofinal.data.model.Categoria;
 import com.example.proyectofinal.data.model.LoginResponse;
+import com.example.proyectofinal.data.model.Nota;
 import com.example.proyectofinal.data.model.Perfume;
 import com.example.proyectofinal.data.model.Usuario;
 
@@ -43,6 +44,12 @@ public interface ApiService {
 
     @GET("categorias/{id}/perfumes/")
     Call<List<Perfume>> getPerfumesPorCategoria(@Path("id") int id);
+
+    @GET("notas/")
+    Call<List<Nota>> getNotas();
+
+    @GET("notas/{id}/perfumes/")
+    Call<List<Perfume>> getPerfumesPorNota(@Path("id") int id);
 
     @POST("compras/")
     Call<com.example.proyectofinal.data.model.CompraResponse> crearCompra(@Body com.example.proyectofinal.data.model.CompraRequest request);

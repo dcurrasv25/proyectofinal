@@ -1,4 +1,4 @@
-package com.example.proyectofinal.ui.categories;
+package com.example.proyectofinal.ui.notes;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryPerfumesActivity extends AppCompatActivity {
+public class NotePerfumesActivity extends AppCompatActivity {
 
     private RecyclerView rvPerfumes;
     private PerfumeAdapter adapter;
@@ -29,40 +29,40 @@ public class CategoryPerfumesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfume_list);
 
-        int categoriaId = getIntent().getIntExtra("CATEGORIA_ID", -1);
-        String categoriaNombre = getIntent().getStringExtra("CATEGORIA_NOMBRE");
+        int notaId = getIntent().getIntExtra("NOTA_ID", -1);
+        String notaNombre = getIntent().getStringExtra("NOTA_NOMBRE");
 
-        if (categoriaNombre != null) {
-            setTitle("Categoría: " + categoriaNombre);
+        if (notaNombre != null) {
+            setTitle("Nota: " + notaNombre);
         }
 
         rvPerfumes = findViewById(R.id.rvPerfumes);
         rvPerfumes.setLayoutManager(new LinearLayoutManager(this));
-        
+
         adapter = new PerfumeAdapter(new ArrayList<>());
         rvPerfumes.setAdapter(adapter);
 
-        if (categoriaId != -1) {
-            cargarPerfumesPorCategoria(categoriaId);
+        if (notaId != -1) {
+            cargarPerfumesPorNota(notaId);
         }
     }
 
-    private void cargarPerfumesPorCategoria(int categoriaId) {
-        // Since backend has GET /categorias/{id}/perfumes/
-        RetrofitClient.getApiService().getPerfumesPorCategoria(categoriaId).enqueue(new Callback<List<Perfume>>() {
+    private void cargarPerfumesPorNota(int notaId) {
+        RetrofitClient.getApiService().getPerfumesPorNota(notaId).enqueue(new Callback<List<Perfume>>() {
             @Override
             public void onResponse(Call<List<Perfume>> call, Response<List<Perfume>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.setPerfumes(response.body());
                 } else {
-                    Toast.makeText(CategoryPerfumesActivity.this, "Error al cargar perfumes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotePerfumesActivity.this, "Error al cargar perfumes", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Perfume>> call, Throwable t) {
-                Toast.makeText(CategoryPerfumesActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NotePerfumesActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 }
+

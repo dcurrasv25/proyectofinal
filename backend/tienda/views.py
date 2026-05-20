@@ -80,6 +80,13 @@ class NotaViewSet(viewsets.ModelViewSet):
     queryset = Nota.objects.all()
     serializer_class = NotaSerializer
 
+    @action(detail=True, methods=['get'])
+    def perfumes(self, request, pk=None):
+        nota = self.get_object()
+        perfumes = nota.perfumes.all()
+        serializer = PerfumeSerializer(perfumes, many=True)
+        return Response(serializer.data)
+
 class CompraViewSet(viewsets.ModelViewSet):
     queryset = Compra.objects.all()
     serializer_class = CompraSerializer

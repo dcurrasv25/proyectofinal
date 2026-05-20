@@ -35,6 +35,9 @@
             android:name=".ui.categories.CategoryPerfumesActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.notes.NotePerfumesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.profile.PurchaseHistoryActivity"
             android:exported="false" />
     </application>

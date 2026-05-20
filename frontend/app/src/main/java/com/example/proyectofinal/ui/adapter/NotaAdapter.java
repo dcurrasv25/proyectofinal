@@ -1,0 +1,65 @@
+package com.example.proyectofinal.ui.adapter;
+
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.proyectofinal.R;
+import com.example.proyectofinal.data.model.Nota;
+import com.example.proyectofinal.ui.notes.NotePerfumesActivity;
+
+import java.util.List;
+
+public class NotaAdapter extends RecyclerView.Adapter<NotaAdapter.NotaViewHolder> {
+
+    private List<Nota> notas;
+
+    public NotaAdapter(List<Nota> notas) {
+        this.notas = notas;
+    }
+
+    public void setNotas(List<Nota> notas) {
+        this.notas = notas;
+        notifyDataSetChanged();
+    }
+
+    @NonNull
+    @Override
+    public NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nota, parent, false);
+        return new NotaViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull NotaViewHolder holder, int position) {
+        Nota nota = notas.get(position);
+        holder.tvNombreNota.setText(nota.getNombre());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), NotePerfumesActivity.class);
+            intent.putExtra("NOTA_ID", nota.getId());
+            intent.putExtra("NOTA_NOMBRE", nota.getNombre());
+            holder.itemView.getContext().startActivity(intent);
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return notas != null ? notas.size() : 0;
+    }
+
+    static class NotaViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNombreNota;
+
+        public NotaViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvNombreNota = itemView.findViewById(R.id.tvNombreNota);
+        }
+    }
+}
+

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.proyectofinal.ui.home.HomeFragment;
 import com.example.proyectofinal.ui.categories.CategoriesFragment;
+import com.example.proyectofinal.ui.notes.NotesFragment;
 import com.example.proyectofinal.ui.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new HomeFragment();
             } else if (itemId == R.id.nav_categories) {
                 fragment = new CategoriesFragment();
+            } else if (itemId == R.id.nav_notes) {
+                fragment = new NotesFragment();
             } else if (itemId == R.id.nav_profile) {
                 fragment = new ProfileFragment();
             } else {
