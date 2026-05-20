@@ -47,7 +47,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                     .load(item.getPerfume().getImagen())
                     .into(holder.ivPerfume);
         } else {
-            holder.ivPerfume.setImageResource(android.R.color.darker_gray);
+            holder.ivPerfume.setImageResource(R.color.image_placeholder);
         }
     }
 

@@ -4,36 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
     tools:context=".ui.settings.SettingsFragment">
 
     <TextView
         android:id="@+id/tvSettingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Ajustes"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.App.Headline"
+        android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvSesionInfo"
-        android:layout_width="0dp"
+        android:id="@+id/tvSettingsSubtitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
-        android:text="Estado de la sesión"
-        android:textSize="16sp"
+        android:layout_marginTop="4dp"
+        android:text="Cuenta y sesión"
+        android:textAppearance="@style/TextAppearance.App.Subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSettingsTitle" />
 
+    <LinearLayout
+        android:id="@+id/cardSesion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/bg_settings_card"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSettingsSubtitle">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sesión"
+            android:textAppearance="@style/TextAppearance.App.Section"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:letterSpacing="0.1" />
+
+        <TextView
+            android:id="@+id/tvSesionInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Estado de la sesión"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnCerrarSesion"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/Widget.App.Button.Outlined"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -42,6 +75,6 @@
         android:text="Cerrar sesión"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSesionInfo" />
+        app:layout_constraintTop_toBottomOf="@id/cardSesion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

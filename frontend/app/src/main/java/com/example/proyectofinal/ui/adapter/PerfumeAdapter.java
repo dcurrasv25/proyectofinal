@@ -50,7 +50,7 @@ public class PerfumeAdapter extends RecyclerView.Adapter<PerfumeAdapter.PerfumeV
                     .load(perfume.getImagen())
                     .into(holder.ivPerfume);
         } else {
-            holder.ivPerfume.setImageResource(android.R.color.darker_gray);
+            holder.ivPerfume.setImageResource(R.color.image_placeholder);
         }
 
         holder.btnDetalles.setOnClickListener(v -> {

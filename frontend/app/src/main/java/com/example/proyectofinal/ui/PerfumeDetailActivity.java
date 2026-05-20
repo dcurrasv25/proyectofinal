@@ -172,11 +172,11 @@ public class PerfumeDetailActivity extends AppCompatActivity {
     private void actualizarColorEstrella() {
         if (isFavorito) {
             btnFavorito.setColorFilter(
-                    ContextCompat.getColor(this, android.R.color.holo_orange_light),
+                    ContextCompat.getColor(this, R.color.black),
                     PorterDuff.Mode.SRC_IN);
         } else {
             btnFavorito.setColorFilter(
-                    ContextCompat.getColor(this, android.R.color.darker_gray),
+                    ContextCompat.getColor(this, R.color.text_hint),
                     PorterDuff.Mode.SRC_IN);
         }
     }
