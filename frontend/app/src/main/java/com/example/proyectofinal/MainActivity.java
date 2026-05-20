@@ -10,6 +10,7 @@ import com.example.proyectofinal.ui.home.HomeFragment;
 import com.example.proyectofinal.ui.categories.CategoriesFragment;
 import com.example.proyectofinal.ui.notes.NotesFragment;
 import com.example.proyectofinal.ui.profile.ProfileFragment;
+import com.example.proyectofinal.ui.settings.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
                 fragment = new NotesFragment();
             } else if (itemId == R.id.nav_profile) {
                 fragment = new ProfileFragment();
+            } else if (itemId == R.id.nav_settings) {
+                fragment = new SettingsFragment();
             } else {
                 return false;
             }

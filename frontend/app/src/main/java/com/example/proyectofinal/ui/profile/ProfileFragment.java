@@ -27,7 +27,6 @@ import com.example.proyectofinal.data.model.LineaPedidoRequest;
 import com.example.proyectofinal.data.model.Perfume;
 import com.example.proyectofinal.ui.adapter.CartAdapter;
 import com.example.proyectofinal.ui.adapter.PerfumeAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class ProfileFragment extends Fragment {
             android.content.Intent intent = new android.content.Intent(getContext(), PurchaseHistoryActivity.class);
             startActivity(intent);
         });
-        
+
         return view;
     }
 
