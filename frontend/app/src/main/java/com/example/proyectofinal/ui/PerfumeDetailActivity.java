@@ -29,9 +29,10 @@ public class PerfumeDetailActivity extends AppCompatActivity {
     private ImageView ivDetailImagen;
     private TextView tvDetailNombre, tvDetailMarca, tvDetailPrecio, tvDetailTipo, tvDetailGenero;
     private Button btnComprar;
-    private ImageButton btnFavorito;
+    private ImageButton btnFavorito, btnEditar;
     private Perfume currentPerfume;
     private boolean isFavorito = false;
+    private int perfumeId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +47,10 @@ public class PerfumeDetailActivity extends AppCompatActivity {
         tvDetailGenero = findViewById(R.id.tvDetailGenero);
         btnComprar = findViewById(R.id.btnComprar);
         btnFavorito = findViewById(R.id.btnFavorito);
+        btnEditar = findViewById(R.id.btnEditar);
 
         // Get data from intent
-        int id = getIntent().getIntExtra("PERFUME_ID", -1);
+        perfumeId = getIntent().getIntExtra("PERFUME_ID", -1);
         String nombre = getIntent().getStringExtra("PERFUME_NOMBRE");
         String marca = getIntent().getStringExtra("PERFUME_MARCA");
         double precio = getIntent().getDoubleExtra("PERFUME_PRECIO", 0.0);
@@ -58,7 +60,7 @@ public class PerfumeDetailActivity extends AppCompatActivity {
 
         // Reconstruct perfume for cart
         currentPerfume = new Perfume();
-        currentPerfume.setId(id);
+        currentPerfume.setId(perfumeId);
         currentPerfume.setNombre(nombre);
         currentPerfume.setMarca(marca);
         currentPerfume.setPrecio(precio);
@@ -81,20 +83,32 @@ public class PerfumeDetailActivity extends AppCompatActivity {
 
         // Inicializar la estrella en gris y comprobar si es favorito
         actualizarColorEstrella();
-        comprobarSiEsFavorito(id);
+        comprobarSiEsFavorito(perfumeId);
+
+        // Mostrar botón de edición si el usuario es administrador
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String rol = prefs.getString("rol", "usuario");
+        if ("admin".equals(rol)) {
+            btnEditar.setVisibility(android.view.View.VISIBLE);
+            btnEditar.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(PerfumeDetailActivity.this, com.example.proyectofinal.ui.home.AddPerfumeActivity.class);
+                intent.putExtra("PERFUME_ID", perfumeId);
+                intent.putExtra("IS_EDIT_MODE", true);
+                startActivity(intent);
+            });
+        }
 
         btnComprar.setOnClickListener(v -> {
             CartManager.getInstance().addToCart(currentPerfume);
-            Toast.makeText(this, nombre + " añadido al carrito", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, currentPerfume.getNombre() + " añadido al carrito", Toast.LENGTH_SHORT).show();
         });
 
         btnFavorito.setOnClickListener(v -> {
-            SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
             int userId = prefs.getInt("user_id", -1);
             if (userId != -1) {
                 if (isFavorito) {
                     // Quitar de favoritos
-                    RetrofitClient.getApiService().removeFavorito(userId, id).enqueue(new Callback<Void>() {
+                    RetrofitClient.getApiService().removeFavorito(userId, perfumeId).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {
@@ -113,7 +127,7 @@ public class PerfumeDetailActivity extends AppCompatActivity {
                     });
                 } else {
                     // Añadir a favoritos
-                    RetrofitClient.getApiService().addFavorito(userId, id).enqueue(new Callback<Void>() {
+                    RetrofitClient.getApiService().addFavorito(userId, perfumeId).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.isSuccessful()) {
@@ -133,6 +147,40 @@ public class PerfumeDetailActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(this, "Inicia sesión para guardar favoritos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (perfumeId != -1) {
+            cargarDetallesPerfume(perfumeId);
+        }
+    }
+
+    private void cargarDetallesPerfume(int id) {
+        RetrofitClient.getApiService().getPerfume(id).enqueue(new Callback<Perfume>() {
+            @Override
+            public void onResponse(Call<Perfume> call, Response<Perfume> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    currentPerfume = response.body();
+                    tvDetailNombre.setText(currentPerfume.getNombre());
+                    tvDetailMarca.setText(currentPerfume.getMarca());
+                    tvDetailPrecio.setText(String.format("%.2f €", currentPerfume.getPrecio()));
+                    tvDetailTipo.setText("Tipo: " + (currentPerfume.getTipo() != null ? currentPerfume.getTipo() : ""));
+                    tvDetailGenero.setText("Género: " + (currentPerfume.getGenero() != null ? currentPerfume.getGenero() : ""));
+                    if (currentPerfume.getImagen() != null && !currentPerfume.getImagen().isEmpty()) {
+                        Glide.with(PerfumeDetailActivity.this)
+                                .load(currentPerfume.getImagen())
+                                .into(ivDetailImagen);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Perfume> call, Throwable t) {
+                // Fallo silencioso
             }
         });
     }

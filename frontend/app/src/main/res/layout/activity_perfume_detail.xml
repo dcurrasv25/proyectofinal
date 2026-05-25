@@ -39,20 +39,36 @@
                         android:id="@+id/tvDetailNombre"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/btnFavorito"
+                        android:layout_toStartOf="@+id/llDetailActions"
                         android:text="Nombre"
                         android:textAppearance="@style/TextAppearance.App.Headline"
                         android:textSize="26sp" />
 
-                    <ImageButton
-                        android:id="@+id/btnFavorito"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                    <LinearLayout
+                        android:id="@+id/llDetailActions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Favorito"
-                        android:src="@android:drawable/btn_star" />
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnEditar"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Editar"
+                            android:src="@android:drawable/ic_menu_edit"
+                            android:visibility="gone" />
+
+                        <ImageButton
+                            android:id="@+id/btnFavorito"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Favorito"
+                            android:src="@android:drawable/btn_star" />
+                    </LinearLayout>
                 </RelativeLayout>
 
                 <TextView

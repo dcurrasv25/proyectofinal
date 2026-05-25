@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -33,11 +34,20 @@ public interface ApiService {
     @POST("perfumes/")
     Call<Perfume> crearPerfume(@Body Perfume perfume);
 
+    @PUT("perfumes/{id}/")
+    Call<Perfume> editarPerfume(@Path("id") int id, @Body Perfume perfume);
+
     @POST("categorias/")
     Call<Categoria> crearCategoria(@Body Categoria categoria);
 
+    @PUT("categorias/{id}/")
+    Call<Categoria> editarCategoria(@Path("id") int id, @Body Categoria categoria);
+
     @POST("notas/")
     Call<Nota> crearNota(@Body Nota nota);
+
+    @PUT("notas/{id}/")
+    Call<Nota> editarNota(@Path("id") int id, @Body Nota nota);
 
     @GET("categorias/")
     Call<List<Categoria>> getCategorias();

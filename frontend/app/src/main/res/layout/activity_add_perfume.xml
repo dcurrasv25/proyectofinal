@@ -14,6 +14,7 @@
         android:padding="24dp">
 
         <TextView
+            android:id="@+id/tvAddPerfumeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -112,6 +113,15 @@
                         android:minHeight="48dp" />
 
                     <ImageButton
+                        android:id="@+id/btnEditCategoria"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@android:drawable/ic_menu_edit"
+                        android:backgroundTint="#F2F2F2"
+                        android:contentDescription="Editar Categoría" />
+
+                    <ImageButton
                         android:id="@+id/btnAddCategoria"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
@@ -145,6 +155,15 @@
                         android:backgroundTint="#F2F2F2"
                         android:textColor="#222222"
                         style="@style/Widget.App.Button" />
+
+                    <ImageButton
+                        android:id="@+id/btnEditNota"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@android:drawable/ic_menu_edit"
+                        android:backgroundTint="#F2F2F2"
+                        android:contentDescription="Editar Nota" />
 
                     <ImageButton
                         android:id="@+id/btnAddNota"
