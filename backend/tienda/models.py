@@ -4,7 +4,11 @@ from django.contrib.auth.models import AbstractUser
 class Usuario(AbstractUser):
     # AbstractUser ya incluye campos como 'username' (para el nombre de usuario), 
     # 'email' (para el correo), y 'password' de forma nativa.
-    pass
+    ROL_CHOICES = (
+        ('admin', 'Administrador'),
+        ('usuario', 'Usuario'),
+    )
+    rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='usuario')
 
 class Categoria(models.Model):
     id_categoria = models.AutoField(primary_key=True)

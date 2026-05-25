@@ -30,6 +30,15 @@ public interface ApiService {
     @GET("perfumes/{id}/")
     Call<Perfume> getPerfume(@Path("id") int id);
 
+    @POST("perfumes/")
+    Call<Perfume> crearPerfume(@Body Perfume perfume);
+
+    @POST("categorias/")
+    Call<Categoria> crearCategoria(@Body Categoria categoria);
+
+    @POST("notas/")
+    Call<Nota> crearNota(@Body Nota nota);
+
     @GET("categorias/")
     Call<List<Categoria>> getCategorias();
 

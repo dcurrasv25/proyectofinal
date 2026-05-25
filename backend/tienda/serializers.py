@@ -10,16 +10,18 @@ class UsuarioSerializer(serializers.ModelSerializer):
     contrasena = serializers.CharField(write_only=True, source='password')
     correo = serializers.EmailField(source='email', required=False)
     nombre_de_usuario = serializers.CharField(source='username')
+    rol = serializers.CharField(default='usuario', required=False)
 
     class Meta:
         model = Usuario
-        fields = ('id', 'nombre_de_usuario', 'correo', 'contrasena')
+        fields = ('id', 'nombre_de_usuario', 'correo', 'contrasena', 'rol')
 
     def create(self, validated_data):
         user = Usuario.objects.create_user(
             username=validated_data['username'],
             email=validated_data.get('email', ''),
-            password=validated_data['password']
+            password=validated_data['password'],
+            rol=validated_data.get('rol', 'usuario')
         )
         return user
 

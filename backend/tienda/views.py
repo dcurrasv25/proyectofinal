@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
 from .models import Usuario, Perfume, Categoria, PerfumeFavorito, Nota, Compra, LineaPedido
@@ -12,9 +13,20 @@ from .serializers import (
     InicioSesionSerializer
 )
 
+class EsAdminOReadonly(BasePermission):
+    """
+    Permiso personalizado: cualquiera puede leer (SAFE_METHODS),
+    pero solo los usuarios administradores autenticados pueden escribir.
+    """
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return True
+        return request.user and request.user.is_authenticated and getattr(request.user, 'rol', 'usuario') == 'admin'
+
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes = [EsAdminOReadonly]
 
     @action(detail=True, methods=['get'])
     def perfumes(self, request, pk=None):
@@ -62,6 +74,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class PerfumeViewSet(viewsets.ModelViewSet):
     queryset = Perfume.objects.all()
     serializer_class = PerfumeSerializer
+    permission_classes = [EsAdminOReadonly]
 
     @action(detail=True, methods=['get'])
     def notas(self, request, pk=None):
@@ -79,6 +92,7 @@ class PerfumeViewSet(viewsets.ModelViewSet):
 class NotaViewSet(viewsets.ModelViewSet):
     queryset = Nota.objects.all()
     serializer_class = NotaSerializer
+    permission_classes = [EsAdminOReadonly]
 
     @action(detail=True, methods=['get'])
     def perfumes(self, request, pk=None):
@@ -106,5 +120,6 @@ class IniciarSesionView(ObtainAuthToken):
         return Response({
             'token': token.key,
             'id': user.id,
-            'nombre_de_usuario': user.username
+            'nombre_de_usuario': user.username,
+            'rol': getattr(user, 'rol', 'usuario')
         })

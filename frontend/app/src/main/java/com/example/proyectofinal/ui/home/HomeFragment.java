@@ -44,6 +44,20 @@ public class HomeFragment extends Fragment {
         adapter = new PerfumeAdapter(new ArrayList<>());
         rvPerfumes.setAdapter(adapter);
 
+        // Mostrar FAB de añadir perfume sólo si es administrador
+        com.google.android.material.floatingactionbutton.FloatingActionButton fabAddPerfume = view.findViewById(R.id.fabAddPerfume);
+        if (getContext() != null) {
+            android.content.SharedPreferences prefs = getContext().getSharedPreferences("MyPrefs", android.content.Context.MODE_PRIVATE);
+            String rol = prefs.getString("rol", "usuario");
+            if ("admin".equals(rol)) {
+                fabAddPerfume.setVisibility(View.VISIBLE);
+                fabAddPerfume.setOnClickListener(v -> {
+                    android.content.Intent intent = new android.content.Intent(getContext(), AddPerfumeActivity.class);
+                    startActivity(intent);
+                });
+            }
+        }
+
         cargarPerfumes();
         configurarBuscador();
 
@@ -98,5 +112,11 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarPerfumes();
     }
 }

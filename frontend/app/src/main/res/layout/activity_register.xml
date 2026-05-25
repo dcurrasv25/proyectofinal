@@ -47,6 +47,40 @@
             android:hint="Contraseña"
             android:inputType="textPassword" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="start"
+            android:text="Selecciona tu rol:"
+            android:textColor="#888888"
+            android:textSize="14sp" />
+
+        <RadioGroup
+            android:id="@+id/rgRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbUser"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="Usuario"
+                android:textColor="#333333" />
+
+            <RadioButton
+                android:id="@+id/rbAdmin"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Administrador"
+                android:textColor="#333333" />
+        </RadioGroup>
+
         <Button
             android:id="@+id/btnRegister"
             style="@style/Widget.App.Button"

@@ -28,6 +28,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Auto-login if token already exists
+        android.content.SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+        if (token != null) {
+            RetrofitClient.authToken = token;
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         etUsername = findViewById(R.id.etUsername);
@@ -68,7 +80,13 @@ public class LoginActivity extends AppCompatActivity {
                     if (response.body().getNombreDeUsuario() != null) {
                         editor.putString("username", response.body().getNombreDeUsuario());
                     }
+                    if (response.body().getRol() != null) {
+                        editor.putString("rol", response.body().getRol());
+                    }
                     editor.apply();
+
+                    // Set token on the network client
+                    RetrofitClient.authToken = response.body().getToken();
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

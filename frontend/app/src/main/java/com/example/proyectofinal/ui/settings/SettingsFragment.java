@@ -39,6 +39,7 @@ public class SettingsFragment extends Fragment {
                 return;
             }
             prefs.edit().clear().apply();
+            com.example.proyectofinal.data.api.RetrofitClient.clearToken();
             Toast.makeText(getContext(), "Sesión cerrada", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

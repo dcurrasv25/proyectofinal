@@ -18,6 +18,7 @@ import retrofit2.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername, etEmail, etPassword;
+    private android.widget.RadioButton rbAdmin;
     private Button btnRegister;
 
     @Override
@@ -28,26 +29,29 @@ public class RegisterActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etRegUsername);
         etEmail = findViewById(R.id.etRegEmail);
         etPassword = findViewById(R.id.etRegPassword);
+        rbAdmin = findViewById(R.id.rbAdmin);
         btnRegister = findViewById(R.id.btnRegister);
 
         btnRegister.setOnClickListener(v -> {
             String username = etUsername.getText().toString();
             String email = etEmail.getText().toString();
             String password = etPassword.getText().toString();
+            String rol = rbAdmin.isChecked() ? "admin" : "usuario";
 
             if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
             } else {
-                registrarUsuario(username, email, password);
+                registrarUsuario(username, email, password, rol);
             }
         });
     }
 
-    private void registrarUsuario(String username, String email, String password) {
+    private void registrarUsuario(String username, String email, String password, String rol) {
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setNombreDeUsuario(username);
         nuevoUsuario.setCorreo(email);
         nuevoUsuario.setContrasena(password);
+        nuevoUsuario.setRol(rol);
 
         RetrofitClient.getApiService().register(nuevoUsuario).enqueue(new Callback<Usuario>() {
             @Override

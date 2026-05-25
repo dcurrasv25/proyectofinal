@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="Añadir Perfume"
+            android:textAppearance="@style/TextAppearance.App.Headline"
+            android:textSize="28sp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <EditText
+                    android:id="@+id/etNombre"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nombre del perfume"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/etMarca"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Marca (ej. Chanel, Dior)"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/etTipo"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Tipo (ej. Eau de Parfum, Eau de Toilette)"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/etGenero"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Género (ej. Masculino, Femenino, Unisex)"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/etPrecio"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Precio (€)"
+                    android:inputType="numberDecimal" />
+
+                <EditText
+                    android:id="@+id/etImagen"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="URL de la imagen"
+                    android:inputType="textUri" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Categoría:"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <Spinner
+                        android:id="@+id/spinnerCategoria"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:minHeight="48dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnAddCategoria"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@android:drawable/ic_input_add"
+                        android:backgroundTint="#F2F2F2"
+                        android:contentDescription="Añadir Categoría" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Notas aromáticas (Obligatorio):"
+                    android:textColor="#888888"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <Button
+                        android:id="@+id/btnSelectNotas"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Seleccionar notas..."
+                        android:backgroundTint="#F2F2F2"
+                        android:textColor="#222222"
+                        style="@style/Widget.App.Button" />
+
+                    <ImageButton
+                        android:id="@+id/btnAddNota"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@android:drawable/ic_input_add"
+                        android:backgroundTint="#F2F2F2"
+                        android:contentDescription="Añadir Nota" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvSelectedNotas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ninguna nota seleccionada"
+                    android:textColor="#666666"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnGuardar"
+            style="@style/Widget.App.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guardar Perfume" />
+
+    </LinearLayout>
+</ScrollView>

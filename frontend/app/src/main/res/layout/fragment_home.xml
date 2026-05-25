@@ -60,4 +60,18 @@
         app:layout_constraintTop_toBottomOf="@id/searchView"
         tools:listitem="@layout/item_perfume" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPerfume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@android:drawable/ic_input_add"
+        android:visibility="gone"
+        android:contentDescription="Añadir Perfume"
+        app:backgroundTint="#222222"
+        app:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

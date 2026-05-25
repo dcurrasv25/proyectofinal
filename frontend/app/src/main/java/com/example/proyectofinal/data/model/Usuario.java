@@ -9,6 +9,7 @@ public class Usuario {
     private String correo;
     @SerializedName("contrasena")
     private String contrasena;
+    private String rol;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -18,4 +19,6 @@ public class Usuario {
     public void setCorreo(String correo) { this.correo = correo; }
     public String getContrasena() { return contrasena; }
     public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
 }
