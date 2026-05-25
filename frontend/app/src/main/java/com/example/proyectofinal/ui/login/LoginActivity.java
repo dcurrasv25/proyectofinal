@@ -28,24 +28,47 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        // Auto-login if token already exists
-        android.content.SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", null);
-        if (token != null) {
-            RetrofitClient.authToken = token;
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
-        }
-
         setContentView(R.layout.activity_login);
 
+        android.widget.ImageView ivLoginLogo = findViewById(R.id.ivLoginLogo);
+        android.widget.TextView tvLoginTitle = findViewById(R.id.tvLoginTitle);
+        android.widget.TextView tvLoginSubtitle = findViewById(R.id.tvLoginSubtitle);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         android.widget.TextView tvGoToRegister = findViewById(R.id.tvGoToRegister);
+
+        // Preparar estado inicial para la animación de entrada
+        ivLoginLogo.setAlpha(0f);
+        ivLoginLogo.setTranslationY(-80f);
+        tvLoginTitle.setAlpha(0f);
+        tvLoginTitle.setTranslationY(40f);
+        tvLoginSubtitle.setAlpha(0f);
+        tvLoginSubtitle.setTranslationY(40f);
+
+        // Ejecutar animaciones fluidas de entrada (Intro Anim)
+        ivLoginLogo.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(1000)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                .start();
+
+        tvLoginTitle.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(1000)
+                .setStartDelay(200)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                .start();
+
+        tvLoginSubtitle.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setDuration(1000)
+                .setStartDelay(450)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                .start();
 
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString();

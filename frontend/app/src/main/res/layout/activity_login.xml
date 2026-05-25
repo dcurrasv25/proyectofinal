@@ -12,15 +12,26 @@
         android:orientation="vertical"
         android:padding="32dp">
 
+        <ImageView
+            android:id="@+id/ivLoginLogo"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:tint="#2C2C2C"
+            android:contentDescription="Logo" />
+
         <TextView
+            android:id="@+id/tvLoginTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="16dp"
             android:text="Essence"
             android:textAppearance="@style/TextAppearance.App.Headline"
             android:textSize="40sp" />
 
         <TextView
+            android:id="@+id/tvLoginSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

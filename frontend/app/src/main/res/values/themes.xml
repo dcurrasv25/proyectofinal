@@ -19,4 +19,12 @@
     </style>
 
     <style name="Theme.Proyectofinal" parent="Base.Theme.Proyectofinal" />
+
+    <!-- Tema nativo del Splash Screen para evitar destello blanco inicial -->
+    <style name="Theme.Proyectofinal.Splash" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">@drawable/ic_launcher_background</item>
+        <item name="android:statusBarColor">#2C2C2C</item>
+        <item name="android:navigationBarColor">#0A0A0A</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>
