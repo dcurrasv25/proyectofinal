@@ -1,0 +1,14 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: essence_api_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Sincroniza el código fuente local con el contenedor para permitir recarga en vivo (hot-reload)
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
