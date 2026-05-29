@@ -29,7 +29,7 @@ public class PerfumeDetailActivity extends AppCompatActivity {
     private ImageView ivDetailImagen;
     private TextView tvDetailNombre, tvDetailMarca, tvDetailPrecio, tvDetailTipo, tvDetailGenero;
     private Button btnComprar;
-    private ImageButton btnFavorito, btnEditar;
+    private ImageButton btnFavorito, btnEditar, btnEliminar;
     private Perfume currentPerfume;
     private boolean isFavorito = false;
     private int perfumeId = -1;
@@ -48,6 +48,7 @@ public class PerfumeDetailActivity extends AppCompatActivity {
         btnComprar = findViewById(R.id.btnComprar);
         btnFavorito = findViewById(R.id.btnFavorito);
         btnEditar = findViewById(R.id.btnEditar);
+        btnEliminar = findViewById(R.id.btnEliminar);
 
         // Get data from intent
         perfumeId = getIntent().getIntExtra("PERFUME_ID", -1);
@@ -95,6 +96,32 @@ public class PerfumeDetailActivity extends AppCompatActivity {
                 intent.putExtra("PERFUME_ID", perfumeId);
                 intent.putExtra("IS_EDIT_MODE", true);
                 startActivity(intent);
+            });
+            btnEliminar.setVisibility(android.view.View.VISIBLE);
+            btnEliminar.setOnClickListener(v -> {
+                new androidx.appcompat.app.AlertDialog.Builder(PerfumeDetailActivity.this)
+                        .setTitle("Eliminar perfume")
+                        .setMessage("¿Estás seguro de que deseas eliminar este perfume?")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            RetrofitClient.getApiService().eliminarPerfume(perfumeId).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(PerfumeDetailActivity.this, "Perfume eliminado correctamente", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        Toast.makeText(PerfumeDetailActivity.this, "Error al eliminar el perfume", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(PerfumeDetailActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             });
         }
 

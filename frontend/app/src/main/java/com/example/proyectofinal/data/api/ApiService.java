@@ -49,6 +49,15 @@ public interface ApiService {
     @PUT("notas/{id}/")
     Call<Nota> editarNota(@Path("id") int id, @Body Nota nota);
 
+    @DELETE("perfumes/{id}/")
+    Call<Void> eliminarPerfume(@Path("id") int id);
+
+    @DELETE("categorias/{id}/")
+    Call<Void> eliminarCategoria(@Path("id") int id);
+
+    @DELETE("notas/{id}/")
+    Call<Void> eliminarNota(@Path("id") int id);
+
     @GET("categorias/")
     Call<List<Categoria>> getCategorias();
 

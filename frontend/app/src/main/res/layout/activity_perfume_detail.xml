@@ -62,6 +62,15 @@
                             android:visibility="gone" />
 
                         <ImageButton
+                            android:id="@+id/btnEliminar"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Eliminar"
+                            android:src="@android:drawable/ic_menu_delete"
+                            android:visibility="gone" />
+
+                        <ImageButton
                             android:id="@+id/btnFavorito"
                             android:layout_width="48dp"
                             android:layout_height="48dp"

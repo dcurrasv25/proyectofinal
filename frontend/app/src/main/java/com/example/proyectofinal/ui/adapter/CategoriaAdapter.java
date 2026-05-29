@@ -45,6 +45,47 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
             intent.putExtra("CATEGORIA_NOMBRE", categoria.getNombre());
             holder.itemView.getContext().startActivity(intent);
         });
+
+        // Configurar botón de eliminar para administradores
+        android.content.Context context = holder.itemView.getContext();
+        android.content.SharedPreferences prefs = context.getSharedPreferences("MyPrefs", android.content.Context.MODE_PRIVATE);
+        String rol = prefs.getString("rol", "usuario");
+        
+        if ("admin".equals(rol)) {
+            holder.btnEliminar.setVisibility(View.VISIBLE);
+            holder.btnEliminar.setOnClickListener(v -> {
+                new androidx.appcompat.app.AlertDialog.Builder(context)
+                        .setTitle("Eliminar categoría")
+                        .setMessage("¿Estás seguro de que deseas eliminar la categoría \"" + categoria.getNombre() + "\"?")
+                        .setPositiveButton("Sí", (dialog, which) -> {
+                            com.example.proyectofinal.data.api.RetrofitClient.getApiService().eliminarCategoria(categoria.getId()).enqueue(new retrofit2.Callback<Void>() {
+                                @Override
+                                public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        int currentPos = holder.getAdapterPosition();
+                                        if (currentPos != RecyclerView.NO_POSITION) {
+                                            categorias.remove(currentPos);
+                                            notifyItemRemoved(currentPos);
+                                            notifyItemRangeChanged(currentPos, categorias.size());
+                                        }
+                                        Toast.makeText(context, "Categoría eliminada", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(context, "Error al eliminar categoría. Puede tener perfumes asociados.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                                    Toast.makeText(context, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            });
+        } else {
+            holder.btnEliminar.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -54,10 +95,12 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.Cate
 
     static class CategoriaViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombreCategoria;
+        android.widget.ImageButton btnEliminar;
 
         public CategoriaViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNombreCategoria = itemView.findViewById(R.id.tvNombreCategoria);
+            btnEliminar = itemView.findViewById(R.id.btnEliminar);
         }
     }
 }
