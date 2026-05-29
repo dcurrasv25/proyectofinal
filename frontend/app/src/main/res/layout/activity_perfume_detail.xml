@@ -68,6 +68,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:contentDescription="Eliminar"
                             android:src="@android:drawable/ic_menu_delete"
+                            android:tint="#D32F2F"
                             android:visibility="gone" />
 
                         <ImageButton
