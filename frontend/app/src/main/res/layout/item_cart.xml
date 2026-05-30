@@ -57,5 +57,16 @@
                 android:textSize="13sp" />
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnDeleteCartItem"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Eliminar"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete"
+            app:tint="#FFE53935" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -17,10 +17,19 @@ import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
 
+    public interface OnCartItemDeleteListener {
+        void onDeleteClick(CartItem item);
+    }
+
     private List<CartItem> cartItems;
+    private OnCartItemDeleteListener deleteListener;
 
     public CartAdapter(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public void setOnCartItemDeleteListener(OnCartItemDeleteListener listener) {
+        this.deleteListener = listener;
     }
 
     public void setCartItems(List<CartItem> cartItems) {
@@ -49,6 +58,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         } else {
             holder.ivPerfume.setImageResource(R.color.image_placeholder);
         }
+
+        holder.btnDelete.setOnClickListener(v -> {
+            if (deleteListener != null) {
+                deleteListener.onDeleteClick(item);
+            }
+        });
     }
 
     @Override
@@ -59,6 +74,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     static class CartViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvPrecio, tvCantidad;
         ImageView ivPerfume;
+        View btnDelete;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +82,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             tvPrecio = itemView.findViewById(R.id.tvCartPrecio);
             tvCantidad = itemView.findViewById(R.id.tvCartCantidad);
             ivPerfume = itemView.findViewById(R.id.ivCartPerfume);
+            btnDelete = itemView.findViewById(R.id.btnDeleteCartItem);
         }
     }
 }

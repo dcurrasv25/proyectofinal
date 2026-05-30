@@ -59,6 +59,12 @@ public class ProfileFragment extends Fragment {
         
         favoritesAdapter = new PerfumeAdapter(new ArrayList<>());
         cartAdapter = new CartAdapter(CartManager.getInstance().getCartItems());
+        cartAdapter.setOnCartItemDeleteListener(item -> {
+            CartManager.getInstance().removeEntireItemFromCart(item.getPerfume());
+            cartAdapter.setCartItems(CartManager.getInstance().getCartItems());
+            actualizarTotal();
+            Toast.makeText(getContext(), item.getPerfume().getNombre() + " eliminado", Toast.LENGTH_SHORT).show();
+        });
 
         rvFavorites.setAdapter(favoritesAdapter);
         rvCart.setAdapter(cartAdapter);

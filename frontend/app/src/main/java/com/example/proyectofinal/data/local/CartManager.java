@@ -48,6 +48,15 @@ public class CartManager {
         return cartItems;
     }
     
+    public void removeEntireItemFromCart(Perfume perfume) {
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getPerfume().getId() == perfume.getId()) {
+                cartItems.remove(i);
+                return;
+            }
+        }
+    }
+    
     public void clearCart() {
         cartItems.clear();
     }
